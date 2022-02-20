@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import rospy
+import rclpy
 
 from flexbe_core import EventState, Logger
 
@@ -21,7 +21,7 @@ class ExampleState(EventState):
 		super(ExampleState, self).__init__(outcomes = ['continue', 'failed'])
 
 		# Store state parameter for later use.
-		self._target_time = rospy.Duration(target_time)
+		self._target_time = rclpy.Duration(target_time)
 
 		# The constructor is called when building the state machine, not when actually starting the behavior.
 		# Thus, we cannot save the starting time now and will do so later.
@@ -33,9 +33,9 @@ class ExampleState(EventState):
 		# Main purpose is to check state conditions and trigger a corresponding outcome.
 		# If no outcome is returned, the state will stay active.
 
-		if rospy.Time.now() - self._start_time > self._target_time:
+		if ExampleState._node.get_clock().now() - self._start_time > self._target_time:
 			return 'continue' # One of the outcomes declared above.
-		
+
 
 	def on_enter(self, userdata):
 		# This method is called when the state becomes active, i.e. a transition from another state to this one is taken.
@@ -44,7 +44,7 @@ class ExampleState(EventState):
 		# The following code is just for illustrating how the behavior logger works.
 		# Text logged by the behavior logger is sent to the operator and displayed in the GUI.
 
-		time_to_wait = (self._target_time - (rospy.Time.now() - self._start_time)).to_sec()
+		time_to_wait = (self._target_time - (ExampleState._node.get_clock().now() - self._start_time)).to_sec()
 
 		if time_to_wait > 0:
 			Logger.loginfo('Need to wait for %.1f seconds.' % time_to_wait)
@@ -63,7 +63,7 @@ class ExampleState(EventState):
 		# because if anything failed, the behavior would not even be started.
 
 		# In this example, we use this event to set the correct start time.
-		self._start_time = rospy.Time.now()
+		self._start_time = ExampleState._node.get_clock().now()
 
 
 	def on_stop(self):
@@ -71,4 +71,3 @@ class ExampleState(EventState):
 		# Use this event to clean up things like claimed resources.
 
 		pass # Nothing to do in this example.
-		

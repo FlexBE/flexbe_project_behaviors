@@ -25,23 +25,28 @@ class ExampleBehaviorSM(Behavior):
 	'''
 
 
-	def __init__(self):
+	def __init__(self, node):
 		super(ExampleBehaviorSM, self).__init__()
 		self.name = 'Example Behavior'
+		self.node = node
 
 		# parameters of this behavior
+		LogState.initialize_ros(node)
+		WaitState.initialize_ros(node)
+		OperatableStateMachine.initialize_ros(node)
+		Logger.initialize(node)
 		self.add_parameter('waiting_time', 3)
 
 		# references to used behaviors
 
 		# Additional initialization code can be added inside the following tags
 		# [MANUAL_INIT]
-		
+
 		# [/MANUAL_INIT]
 
 		# Behavior comments:
 
-		# O 172 147 
+		# O 172 147
 		# This transition will only be executed if the Autonomy Level is greater than Low during execution, e.g. High
 
 
@@ -53,7 +58,7 @@ class ExampleBehaviorSM(Behavior):
 
 		# Additional creation code can be added inside the following tags
 		# [MANUAL_CREATE]
-		
+
 		# [/MANUAL_CREATE]
 
 
@@ -76,5 +81,5 @@ class ExampleBehaviorSM(Behavior):
 
 	# Private functions can be added inside the following tags
 	# [MANUAL_FUNC]
-	
+
 	# [/MANUAL_FUNC]

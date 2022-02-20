@@ -30,7 +30,6 @@ class ExampleActionState(EventState):
 		super(ExampleActionState, self).__init__(outcomes = ['cleaned_some', 'cleaned_enough', 'command_error'],
 												 input_keys = ['dishwasher'],
 												 output_keys = ['cleaned'])
-
 		self._dishes_to_do = dishes_to_do
 
 		# Create the action client when building the behavior.
@@ -38,6 +37,7 @@ class ExampleActionState(EventState):
 		# and will trigger a timeout error if it is not available.
 		# Using the proxy client provides asynchronous access to the result and status
 		# and makes sure only one client is used, no matter how often this state is used in a behavior.
+		ProxyActionClient._initialize(ExampleActionState._node)
 		self._topic = 'do_dishes'
 		self._client = ProxyActionClient({self._topic: DoDishesAction}) # pass required clients as dict (topic: type)
 
@@ -67,7 +67,7 @@ class ExampleActionState(EventState):
 				return 'cleaned_some'
 
 		# If the action has not yet finished, no outcome will be returned and the state stays active.
-		
+
 
 	def on_enter(self, userdata):
 		# When entering this state, we send the action goal once to let the robot start its work.
@@ -98,4 +98,3 @@ class ExampleActionState(EventState):
 		if not self._client.has_result(self._topic):
 			self._client.cancel(self._topic)
 			Logger.loginfo('Cancelled active action goal.')
-		

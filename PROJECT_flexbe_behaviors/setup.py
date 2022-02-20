@@ -1,11 +1,28 @@
 #!/usr/bin/env python
+import os
+from setuptools import setup
 
-from distutils.core import setup
-from catkin_pkg.python_setup import generate_distutils_setup
+package_name = 'PROJECT_flexbe_behaviors'
 
-d = generate_distutils_setup(
-    packages = ['PROJECT_flexbe_behaviors'],
-    package_dir = {'': 'src'}
+setup(
+    name=package_name,
+    version='1.3.1',
+    packages=[package_name],
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
+    install_requires=['setuptools'],
+    zip_safe=True,
+    maintainer='phil',
+    maintainer_email='philsplus@gmail.com',
+    description='TODO: Package description',
+    license='TODO: License declaration',
+    tests_require=['pytest'],
+    entry_points={
+        'console_scripts': [
+            'example_behavior_sm = PROJECT_flexbe_behaviors.example_behavior_sm',
+        ],
+    },
 )
-
-setup(**d)
