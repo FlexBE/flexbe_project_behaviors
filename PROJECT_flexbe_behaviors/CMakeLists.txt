@@ -15,11 +15,6 @@ find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 
 install(DIRECTORY
-  manifest
-  DESTINATION lib/${PROJECT_NAME}
-)
-
-install(DIRECTORY
   config
   DESTINATION lib/${PROJECT_NAME}
 )
