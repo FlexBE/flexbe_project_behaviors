@@ -28,8 +28,12 @@ from flexbe_core.proxy import ProxyActionClient
 #    https://docs.ros.org/en/iron/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Actions/Understanding-ROS2-Actions.html
 #    https://docs.ros.org/en/iron/Tutorials/Beginner-CLI-Tools/Introducing-Turtlesim/Introducing-Turtlesim.html
 #    https://docs.ros2.org/latest/api/turtlesim/action/RotateAbsolute.html
-from turtlesim.action import RotateAbsolute
-
+try:
+    # Kilted and newer
+    from turtlesim_msgs.action import RotateAbsolute
+except ModuleNotFoundError:
+    # Jazzy and older
+    from turtlesim.action import RotateAbsolute
 
 class ExampleActionState(EventState):
     """
