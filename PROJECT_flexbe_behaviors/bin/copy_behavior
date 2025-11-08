@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2023 Christopher Newport University
+# Copyright 2025 Christopher Newport University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ fi
 
 beh=$(echo "$1" | cut -f 1 -d '.')  # include only the base file name is someone pastes .xml name
 pack="PROJECT_flexbe_behaviors"  # Default name uses this behaviors package
-if [ $# -eq 2 ]; then 
+if [ $# -eq 2 ]; then
     pack="$2"
     echo "Using specified package '${pack}'!"
 fi
@@ -63,7 +63,9 @@ if [ ! -d "${pack}/${pack}" ]; then
     exit
 fi
 
-if [ ! -f "${WORKSPACE_ROOT}/install/${pack}/local/lib/python3.10/dist-packages/${pack}/${beh}_sm.py" ]; then
+PYVER=$(python3 -c "import sys; print(f'{sys.version_info[0]}.{sys.version_info[1]}')")
+
+if [ ! -f "${WORKSPACE_ROOT}/install/${pack}/lib/${PYVER}/site-packages/${pack}/${beh}_sm.py" ]; then
     echo ""
     echo -e "\e[91m Behavior '${beh}' implementation does not exist in install folder for '${pack}' package!\033[0m"
     echo ""
@@ -77,7 +79,7 @@ fi
 
 # Begin the work
 echo "Copying '${beh}' implementation to '${pack}' under '${PWD}' ..."
-cp ${WORKSPACE_ROOT}/install/${pack}/local/lib/python3.10/dist-packages/${pack}/${beh}_sm.py ./${pack}/${pack}/${beh}_sm.py
+cp ${WORKSPACE_ROOT}/install/${pack}/local/lib/${PYVER}/site-packages/${pack}/${beh}_sm.py ./${pack}/${pack}/${beh}_sm.py
 
 if test $? -eq 0; then
     echo "Copying '${beh}.xml' manifest to '${pack}' ..."
